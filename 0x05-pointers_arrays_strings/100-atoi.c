@@ -39,7 +39,12 @@ int _atoi(char *s)
 				}
 			}
 			first = 1;
+			if ((s[i + 1] >= '0' && s[i + 1] <= '9') == 0)
+			{
+				break;
+			}
 		}
+		i++;
 	}
-	return (res);
+	return ((first == 0) ? 0 : res);
 }
