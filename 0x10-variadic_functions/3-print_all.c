@@ -2,91 +2,52 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <stdio.h>
+
 /**
- * print_all - ___
- * @format: ___
- *
- * Return: ___
+ * print_all - A function prints anyting.
+ * @format: A list of type of arguments passed to the function.
+ * Return: Nothing
  */
 void print_all(const char * const format, ...)
 {
-va_list args;
-f_dt form_types[] = {
-{ "c", print_a_char},
-{ "i", print_a_integer},
-{ "f", print_a_float},
-{ "s", print_a_char_ptr}
-};
-unsigned int i = 0;
-unsigned int j = 0;
-char *separator = "";
-va_start(args, format);
+va_list ap;
+char *temp;
+int i = 0;
 
-while (format != NULL && format[i])
+va_start(ap, format);
+while (format == NULL)
 {
-j = 0;
-while (j < 4)
-{
-if (format[i] == *form_types[j].identifier)
-{
-form_types[j].f(separator, args);
-separator = ", ";
-}
-j++;
-}
-i++;
-}
-va_end(args);
 printf("\n");
-}
-/**
- * print_a_char - ___
- * @separator: ___
- * @args: ___
- *
- * Return: ___
- */
-void print_a_char(char *separator, va_list args)
-{
-printf("%s%c", separator, va_arg(args, int));
-}
-/**
- * print_a_integer - ___
- * @separator: ___
- * @args: ___
- *
- * Return: ___
- */
-void print_a_integer(char *separator, va_list args)
-{
-printf("%s%i", separator, va_arg(args, int));
-}
-/**
- * print_a_float - ___
- * @separator: ___
- * @args: ___
- *
- * Return: ___
- */
-void print_a_float(char *separator, va_list args)
-{
-printf("%s%f", separator, va_arg(args, double));
-}
-/**
- * print_a_char_ptr - ___
- * @separator: ___
- * @args: ___
- *
- * Return: ___
- */
-void print_a_char_ptr(char *separator, va_list args)
-{
-char *arg = va_arg(args, char *);
-
-if (arg == NULL)
-{
-printf("%s%s", separator, "(nil)");
 return;
 }
-printf("%s%s", separator, arg);
+while (format[i])
+{
+switch (format[i])
+{
+case 'c':
+printf("%c", (char) va_arg(ap, int));
+break;
+case 'i':
+printf("%d", va_arg(ap, int));
+break;
+case 'f':
+printf("%f", (float) va_arg(ap, double));
+break;
+case 's':
+temp = va_arg(ap, char*);
+if (temp != NULL)
+{
+printf("%s", temp);
+break;
+}
+printf("(nil)");
+break;
+}
+if ((format[i] == 'c' || format[i] == 'i' || format[i] == 'f' ||
+format[i] == 's') && format[(i + 1)] != '\0')
+printf(", ");
+i++;
+}
+va_end(ap);
+printf("\n");
 }
